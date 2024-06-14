@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>xeroAPIproject</title>
+</head>
+<body>
+    <h1>Welcome to Your App</h1>
+    <p>This application integrates Xero with Excel to provide seamless data transfer and analysis.</p>
+    <p>Contact us at: support@yourapp.com</p>
+</body>
+</html>
