@@ -1,3 +1,5 @@
+import os
+
 # Basic Flask Configuration
 DEBUG = True  # Set to False in production
 SECRET_KEY = 'mysecretkey'
