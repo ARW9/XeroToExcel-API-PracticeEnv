@@ -49,8 +49,6 @@ xero = oauth.remote_app(
           "payroll.employees payroll.payruns payroll.payslip payroll.timesheets payroll.settings",
 )
 
-)
-
 # Xero API client configuration
 api_client = ApiClient(
     Configuration(
