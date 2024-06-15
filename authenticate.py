@@ -82,17 +82,21 @@ def favicon():
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 # Routes
+import urllib.parse
+
 @app.route("/login")
 def login():
-    redirect_url = url_for("oauth_callback", _external=True)
-    session["state"] = app.config.get("STATE", "default_state")
-    try:
-        # Generate the authorization URL directly as a string
-        auth_url = xero.authorize(callback_uri=redirect_url, state=session["state"])
-        return jsonify({"auth_url": str(auth_url)})  # Convert to string and return as JSON
-    except Exception as e:
-        app.logger.error(f"OAuth authorization failed: {e}")
-        return jsonify({"error": str(e)}), 500
+    base_authorization_url = app.config["OAUTH2_AUTHORIZATION_URL"]
+    params = {
+        'response_type': 'code',
+        'client_id': app.config["CLIENT_ID"],
+        'redirect_uri': url_for("oauth_callback", _external=True),
+        'scope': app.config["OAUTH2_SCOPE"],
+        'state': session["state"]
+    }
+    authorization_url = f"{base_authorization_url}?{urllib.parse.urlencode(params)}"
+    return jsonify({"auth_url": authorization_url})
+
 
 
 @app.route("/callback")
