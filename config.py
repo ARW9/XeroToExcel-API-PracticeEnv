@@ -34,7 +34,7 @@ XERO_API_BASE_URL = 'https://api.xero.com'
 XERO_TENANT_ID = 'your_tenant_id_here'
 
 # OAuth Scope
-OAUTH2_SCOPE = 'offline_access openid profile email accounting.transactions.read accounting.reports.read'
+OAUTH2_SCOPE = 'offline_access'
 
 # Secure state generation
 def generate_state():
