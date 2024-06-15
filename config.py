@@ -2,7 +2,7 @@ import os
 
 # Basic Flask Configuration
 DEBUG = True
-SECRET_KEY = 'replace_with_a_secure_secret_key'
+SECRET_KEY = 'mysecretkey'
 
 # OAuth Configuration
 CLIENT_ID = '31B88F29375F4310A5643DE73D4F3DE6'  # Replace with your actual client ID
@@ -33,12 +33,5 @@ XERO_API_BASE_URL = 'https://api.xero.com'
 XERO_TENANT_ID = 'your_tenant_id_here'
 
 # OAuth Scope
-OAUTH2_SCOPE = ' '.join([
-    "offline_access", "openid", "profile", "email",
-    "accounting.transactions", "accounting.transactions.read",
-    "accounting.reports.read", "accounting.journals.read",
-    "accounting.settings", "accounting.settings.read",
-    "accounting.contacts", "accounting.contacts.read",
-    "accounting.attachments", "accounting.attachments.read",
-    "assets", "projects", "files"
-])
+OAUTH2_SCOPE = 'offline_access openid profile email accounting.transactions.read accounting.reports.read'
+)
