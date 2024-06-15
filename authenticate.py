@@ -12,7 +12,10 @@ import logging_settings
 
 # Logging configuration
 from logging.config import dictConfig
-dict Adeling_config(logging_settings.default_settings)
+import logging_settings
+
+# Configure logging
+dictConfig(logging_settings.default_settings)
 
 # Initialize Flask application
 app = Flask(__name__)
