@@ -86,10 +86,13 @@ def login():
     redirect_url = url_for("oauth_callback", _external=True)
     session["state"] = app.config["STATE"]
     try:
-        return xero.authorize(callback_uri=redirect_url, state=session["state"])
+        # Get the URL for authorization instead of directly redirecting
+        auth_url = xero.authorize(callback_uri=redirect_url, state=session["state"], _external=False)
+        return jsonify({"auth_url": auth_url})  # Return the URL in JSON format
     except Exception as e:
         app.logger.error(f"OAuth authorization failed: {e}")
-        raise
+        return jsonify({"error": str(e)}), 500
+
 
 @app.route("/callback")
 def oauth_callback():
