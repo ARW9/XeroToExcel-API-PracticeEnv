@@ -1,4 +1,4 @@
-from flask import Flask, session, request, redirect, url_for, jsonify, render_template
+from flask import Flask, session, request, redirect, url_for, jsonify, render_template, send_from_directory
 from flask_session import Session
 from flask_oauthlib.contrib.client import OAuth, OAuth2Application
 from xero_python.api_client import ApiClient
@@ -31,8 +31,8 @@ oauth = OAuth(app)
 xero = oauth.remote_app(
     name="xero",
     version="2",
-    client_id=app.config["CLIENT_ID"],  # Use the key CLIENT_ID
-    client_secret=app.config["CLIENT_SECRET"],  # Use the key CLIENT_SECRET
+    client_id=app.config["CLIENT_ID"],  # Ensure this is set in your config.py or default_settings
+    client_secret=app.config["CLIENT_SECRET"],  # Ensure this is set in your config.py or default_settings
     endpoint_url="https://api.xero.com/",
     authorization_url=app.config["OAUTH2_AUTHORIZATION_URL"],
     access_token_url=app.config["OAUTH2_TOKEN_URL"],
@@ -69,6 +69,17 @@ def xero_token_required(f):
             return redirect(url_for('login'))
         return f(*args, **kwargs)
     return decorated_function
+
+# Define a route for the root URL
+@app.route("/")
+def home():
+    return "Welcome to the Xero API Integration Application!"
+
+# Serve favicon
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                               'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 # Routes
 @app.route("/login")
