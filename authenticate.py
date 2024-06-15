@@ -34,23 +34,21 @@ oauth = OAuth(app)
 xero = oauth.remote_app(
     name="xero",
     version="2",
-    client_id=app.config["31B88F29375F4310A5643DE73D4F3DE6"],
-    client_secret=app and_config["X4bsexN6jPVxHaFRz0Fujoh8Q1r_Brr95FhxWrBPwFCTLmJd"],
+    client_id=app.config["31B88F29375F4310A5643DE73D4F3DE6"],  # Use your actual config key for CLIENT_ID
+    client_secret=app.config["X4bsexN6jPVxHaFRz0Fujoh8Q1r_Brr95FhxWrBPwFCTLmJd"],  # Use your actual config key for CLIENT_SECRET
     endpoint_url="https://api.xero.com/",
     authorization_url="https://login.xero.com/identity/connect/authorize",
     access_token_url="https://identity.xero.com/connect/token",
     refresh_token_url="https://identity.xero.com/connect/token",
-    scope=" ".join([
-        "offline_access", "openid", "profile", "email",
-        "accounting.transactions", "accounting.transactions.read",
-        "accounting.reports.read", "accounting.journals.read",
-        "accounting.settings", "accounting.settings.read",
-        "accounting.contacts", "accounting.contacts.read",
-        "accounting.attachments", "accounting.attachments.read",
-        "assets", "projects", "files",
-        "payroll.employees", "payroll.payruns", "payroll.payslip",
-        "payroll.timesheets", "payroll.settings"
-    ])
+    scope="offline_access openid profile email accounting.transactions "
+          "accounting.transactions.read accounting.reports.read "
+          "accounting.journals.read accounting.settings accounting.settings.read "
+          "accounting.contacts accounting.contacts.read accounting.attachments "
+          "accounting.attachments.read assets projects "
+          "files "
+          "payroll.employees payroll.payruns payroll.payslip payroll.timesheets payroll.settings",
+)
+
 )
 
 # Xero API client configuration
