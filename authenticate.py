@@ -12,9 +12,6 @@ import logging_settings
 
 # Logging configuration
 from logging.config import dictConfig
-import logging_settings
-
-# Configure logging
 dictConfig(logging_settings.default_settings)
 
 # Initialize Flask application
@@ -34,19 +31,23 @@ oauth = OAuth(app)
 xero = oauth.remote_app(
     name="xero",
     version="2",
-    client_id=app.config["31B88F29375F4310A5643DE73D4F3DE6"],  # Use your actual config key for CLIENT_ID
-    client_secret=app.config["X4bsexN6jPVxHaFRz0Fujoh8Q1r_Brr95FhxWrBPwFCTLmJd"],  # Use your actual config key for CLIENT_SECRET
+    client_id=app.config["31B88F29375F4310A5643DE73D4F3DE6"],  # Ensure this is set in your config.py or default_settings
+    client_secret=app.config["X4bsexN6jPVxHaFRz0Fujoh8Q1r_Brr95FhxWrBPwFCTLmJd"],  # Ensure this is set in your config.py or default_settings
     endpoint_url="https://api.xero.com/",
     authorization_url="https://login.xero.com/identity/connect/authorize",
     access_token_url="https://identity.xero.com/connect/token",
     refresh_token_url="https://identity.xero.com/connect/token",
-    scope="offline_access openid profile email accounting.transactions "
-          "accounting.transactions.read accounting.reports.read "
-          "accounting.journals.read accounting.settings accounting.settings.read "
-          "accounting.contacts accounting.contacts.read accounting.attachments "
-          "accounting.attachments.read assets projects "
-          "files "
-          "payroll.employees payroll.payruns payroll.payslip payroll.timesheets payroll.settings",
+    scope=" ".join([
+        "offline_access", "openid", "profile", "email",
+        "accounting.transactions", "accounting.transactions.read",
+        "accounting.reports.read", "accounting.journals.read",
+        "accounting.settings", "accounting.settings.read",
+        "accounting.contacts", "accounting.contacts.read",
+        "accounting.attachments", "accounting.attachments.read",
+        "assets", "projects", "files",
+        "payroll.employees", "payroll.payruns", "payroll.payslip",
+        "payroll.timesheets", "payroll.settings"
+    ])
 )
 
 # Xero API client configuration
@@ -119,6 +120,7 @@ def accounting_invoice_read_all():
     except AccountingBadRequestException as e:
         app.logger.error(f"Failed to retrieve invoices: {e}")
         return jsonify(error=str(e)), 400
+
 
 # Main execution guard
 if __name__ == "__main__":
