@@ -1,20 +1,19 @@
-import os  # Ensure this is at the top of your file
+import os
 
 # Basic Flask Configuration
 DEBUG = True
-SECRET_KEY = 'mysecretkey'
-ENV = 'development'
+SECRET_KEY = 'replace_with_a_secure_secret_key'
 
 # OAuth Configuration
-CLIENT_ID = '31B88F29375F4310A5643DE73D4F3DE6'
-CLIENT_SECRET = 'X4bsexN6jPVxHaFRz0Fujoh8Q1r_Brr95FhxWrBPwFCTLmJd'
+CLIENT_ID = '31B88F29375F4310A5643DE73D4F3DE6'  # Replace with your actual client ID
+CLIENT_SECRET = 'X4bsexN6jPVxHaFRz0Fujoh8Q1r_Brr95FhxWrBPwFCTLmJd'  # Replace with your actual client secret
 
 # Session Configuration
 SESSION_TYPE = 'filesystem'
 SESSION_PERMANENT = False
 SESSION_USE_SIGNER = True
 SESSION_KEY_PREFIX = 'session:'
-SESSION_FILE_DIR = os.path.expanduser("~/Documents/'Project Repositories'/XeroToExcel-API-PracticeEnv")  # Use a writable directory
+SESSION_FILE_DIR = os.path.expanduser('~/.my_flask_sessions')
 
 # Ensure the session file directory exists
 if not os.path.exists(SESSION_FILE_DIR):
