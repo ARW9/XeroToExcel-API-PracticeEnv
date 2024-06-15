@@ -1,4 +1,5 @@
 import os
+import secrets
 
 # Basic Flask Configuration
 DEBUG = True
@@ -22,7 +23,7 @@ if not os.path.exists(SESSION_FILE_DIR):
 # OAuth2 Provider URLs
 OAUTH2_AUTHORIZATION_URL = 'https://login.xero.com/identity/connect/authorize'
 OAUTH2_TOKEN_URL = 'https://identity.xero.com/connect/token'
-OAUTH2_REDIRECT_URI = 'http://localhost:3000/callback'
+OAUTH2_REDIRECT_URI = 'http://localhost:5000/callback'  # Adjusted to the correct callback URL
 
 # Logging Configuration
 LOGGING_LEVEL = 'DEBUG'
@@ -34,3 +35,10 @@ XERO_TENANT_ID = 'your_tenant_id_here'
 
 # OAuth Scope
 OAUTH2_SCOPE = 'offline_access openid profile email accounting.transactions.read accounting.reports.read'
+
+# Secure state generation
+def generate_state():
+    return secrets.token_urlsafe(16)
+
+# Store the state in session
+SESSION_STATE_KEY = 'oauth_state'
