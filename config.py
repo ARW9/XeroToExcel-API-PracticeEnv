@@ -7,7 +7,7 @@ SECRET_KEY = 'mysecretkey'
 
 # OAuth Configuration
 CLIENT_ID = '31B88F29375F4310A5643DE73D4F3DE6'  # Replace with your actual client ID
-CLIENT_SECRET = 'X4bsexN6jPVxHaFRz0Fujoh8Q1r_Brr95FhxWrBPwFCTLmJd'  # Replace with your actual client secret
+CLIENT_SECRET = 'dFzkdqXK-sKg8URdTHZO8GsTcUEi2XibD4d8lKDpdUd4THyK'  # Replace with your actual client secret
 
 # Session Configuration
 SESSION_TYPE = 'filesystem'
