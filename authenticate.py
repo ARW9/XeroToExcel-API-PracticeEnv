@@ -20,7 +20,7 @@ app.config.from_object("default_settings")
 app.config.from_pyfile("config.py", silent=True)
 
 # Enable insecure transport on non-production environments for local testing
-if app.config["ENV"] != "production":
+if app.config.get("ENV", "development") != "production":
     os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 # Configure session management
@@ -31,23 +31,13 @@ oauth = OAuth(app)
 xero = oauth.remote_app(
     name="xero",
     version="2",
-    client_id=app.config["31B88F29375F4310A5643DE73D4F3DE6"],  # Ensure this is set in your config.py or default_settings
-    client_secret=app.config["X4bsexN6jPVxHaFRz0Fujoh8Q1r_Brr95FhxWrBPwFCTLmJd"],  # Ensure this is set in your config.py or default_settings
+    client_id=app.config["CLIENT_ID"],  # Use the key CLIENT_ID
+    client_secret=app.config["CLIENT_SECRET"],  # Use the key CLIENT_SECRET
     endpoint_url="https://api.xero.com/",
-    authorization_url="https://login.xero.com/identity/connect/authorize",
-    access_token_url="https://identity.xero.com/connect/token",
-    refresh_token_url="https://identity.xero.com/connect/token",
-    scope=" ".join([
-        "offline_access", "openid", "profile", "email",
-        "accounting.transactions", "accounting.transactions.read",
-        "accounting.reports.read", "accounting.journals.read",
-        "accounting.settings", "accounting.settings.read",
-        "accounting.contacts", "accounting.contacts.read",
-        "accounting.attachments", "accounting.attachments.read",
-        "assets", "projects", "files",
-        "payroll.employees", "payroll.payruns", "payroll.payslip",
-        "payroll.timesheets", "payroll.settings"
-    ])
+    authorization_url=app.config["OAUTH2_AUTHORIZATION_URL"],
+    access_token_url=app.config["OAUTH2_TOKEN_URL"],
+    refresh_token_url=app.config["OAUTH2_TOKEN_URL"],
+    scope=app.config["OAUTH2_SCOPE"]
 )
 
 # Xero API client configuration
@@ -84,15 +74,13 @@ def xero_token_required(f):
 @app.route("/login")
 def login():
     redirect_url = url_for("oauth_callback", _external=True)
-    session["state"] = app.config["STATE"]
+    session["state"] = app.config.get("STATE", "default_state")
     try:
-        # Get the URL for authorization instead of directly redirecting
         auth_url = xero.authorize(callback_uri=redirect_url, state=session["state"], _external=False)
-        return jsonify({"auth_url": auth_url})  # Return the URL in JSON format
+        return jsonify({"auth_url": auth_url})  # Output the authorization URL
     except Exception as e:
         app.logger.error(f"OAuth authorization failed: {e}")
         return jsonify({"error": str(e)}), 500
-
 
 @app.route("/callback")
 def oauth_callback():
@@ -123,7 +111,6 @@ def accounting_invoice_read_all():
     except AccountingBadRequestException as e:
         app.logger.error(f"Failed to retrieve invoices: {e}")
         return jsonify(error=str(e)), 400
-
 
 # Main execution guard
 if __name__ == "__main__":
