@@ -34,4 +34,3 @@ XERO_TENANT_ID = 'your_tenant_id_here'
 
 # OAuth Scope
 OAUTH2_SCOPE = 'offline_access openid profile email accounting.transactions.read accounting.reports.read'
-)
