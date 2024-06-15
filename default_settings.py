@@ -3,6 +3,7 @@ import os  # Ensure this is at the top of your file
 # Basic Flask Configuration
 DEBUG = True
 SECRET_KEY = 'mysecretkey'
+ENV = 'development'
 
 # OAuth Configuration
 CLIENT_ID = '31B88F29375F4310A5643DE73D4F3DE6'
