@@ -1,4 +1,4 @@
-from flask import Flask, session, request, redirect, url_for, jsonify, render failed_output, render_template
+from flask import Flask, session, request, redirect, url_for, jsonify, render_template
 from flask_session import Session
 from flask_oauthlib.contrib.client import OAuth, OAuth2Application
 from xero_python.api_client import ApiClient
