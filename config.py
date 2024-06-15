@@ -40,7 +40,5 @@ OAUTH2_SCOPE = ' '.join([
     "accounting.settings", "accounting.settings.read",
     "accounting.contacts", "accounting.contacts.read",
     "accounting.attachments", "accounting.attachments.read",
-    "assets", "projects", "files",
-    "payroll.employees", "payroll.payruns", "payroll.payslip",
-    "payroll.timesheets", "payroll.settings"
+    "assets", "projects", "files"
 ])
