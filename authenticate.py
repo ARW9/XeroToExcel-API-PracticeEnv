@@ -86,17 +86,17 @@ import urllib.parse
 
 @app.route("/login")
 def login():
-    base_authorization_url = app.config["OAUTH2_AUTHORIZATION_URL"]
-    params = {
-        'response_type': 'code',
-        'client_id': app.config["CLIENT_ID"],
-        'redirect_uri': url_for("oauth_callback", _external=True),
-        'scope': app.config["OAUTH2_SCOPE"],
-        'state': session["state"]
-    }
-    authorization_url = f"{base_authorization_url}?{urllib.parse.urlencode(params)}"
-    return jsonify({"auth_url": authorization_url})
-
+    redirect_url = url_for("oauth_callback", _external=True)
+    # Set 'state' in session if not already set
+    if 'state' not in session:
+        session["state"] = "some_random_string"  # Replace with a secure random string for CSRF protection
+    try:
+        # Generate the authorization URL
+        auth_url = xero.authorize(callback_uri=redirect_url, state=session["state"])
+        return jsonify({"auth_url": auth_url})  # Return the URL in JSON format
+    except Exception as e:
+        app.logger.error(f"OAuth authorization failed: {e}")
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route("/callback")
