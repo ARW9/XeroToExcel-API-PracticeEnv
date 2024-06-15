@@ -45,3 +45,5 @@ OAUTH2_SCOPE = ' '.join([
     "payroll.employees", "payroll.payruns", "payroll.payslip",
     "payroll.timesheets", "payroll.settings"
 ])
+
+client_id=app.config["31B88F29375F4310A5643DE73D4F3DE6"]
