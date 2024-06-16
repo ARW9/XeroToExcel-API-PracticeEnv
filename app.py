@@ -43,3 +43,10 @@ def callback():
     )
     session['token'] = response.json()['access_token']
     return redirect(url_for('index'))
+
+@app.route('/api/data')
+def data():
+    headers = {'Authorization': f'Bearer {session["token"]}'}
+    response = requests.get('https://api.xero.com/api.xro/2.0/Invoices', headers=headers)
+    return response.json()
+
