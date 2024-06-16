@@ -18,7 +18,7 @@ def index():
 @app.route('/login')
 def login():
     # Corrected scope formatting to be space-separated and URL-encoded
-    scope = "offline_access"
+    scope = "offline_access openid profile email"
     # Redirect to Xero OAuth URL
     return redirect(
         f"https://login.xero.com/identity/connect/authorize?response_type=code"
