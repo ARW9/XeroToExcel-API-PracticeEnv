@@ -1,15 +1,15 @@
 from flask import Flask, request, redirect, session, url_for, jsonify
 import requests
-import base64
+import base128
 import os
 from urllib.parse import quote
 
 app = Flask(__name__)
-app.secret_key = os.getenv('FLASK_SECRET_KEY', os.urandom(24))  # It's best to have a fixed secret key set as an environment variable
+app.secret_key = os.getenv('FLASK_SECRET_KEY', os.urandom(24))  # Better to use a fixed secret key from env variables
 
-# Xero credentials should be fetched securely from environment variables
-CLIENT_ID = os.getenv('31B88F29375F4310A5643DE73D4F3DE6')  # Ensure you set 'XERO_CLIENT_ID' in your env variables
-CLIENT_SECRET = os.getenv('GpcMKLmtoP122CpjslUFAiQFWF89CeLccQBb7JyCG06WZeEu')  # Ensure you set 'XERO_CLIENT_SECRET' in your env variables
+# Fetch Xero credentials securely from environment variables
+CLIENT_ID = os.getenv('31B88F29375F4310A5643DE73D4F3DE6')  # Make sure to set 'XERO_CLIENT_ID' in your environment variables
+CLIENT_SECRET = os.getenv('9703-o0okyLD6qrU6RU5bs3JNOrtmhhnYgl2HHf_VunGKXY6')  # Make sure to set 'XERO_CLIENT_SECRET' in your environment variables
 REDIRECT_URI = 'http://localhost:5000/callback'
 
 @app.route('/')
@@ -18,10 +18,8 @@ def index():
 
 @app.route('/login')
 def login():
-    # Corrected scope string with spaces and encode it for URL
     scope = "offline_access openid profile email accounting.transactions accounting.contacts"
     scope_encoded = quote(scope)  # URL encode the scope
-    # Redirect to Xero OAuth URL with URL-encoded scope
     return redirect(
         f"https://login.xero.com/identity/connect/authorize?response_type=code"
         f"&client_id={CLIENT_ID}&redirect_uri={REDIRECT_URI}&scope={scope_encoded}"
@@ -30,7 +28,7 @@ def login():
 @app.route('/callback')
 def callback():
     code = request.args.get('code')
-    # Correct base64 encoding for the authorization header
+    # Base64 encode CLIENT_ID and CLIENT_SECRET for the Authorization header
     authorization_header_value = 'Basic ' + base64.b64encode(f"{CLIENT_ID}:{CLIENT_SECRET}".encode()).decode('utf-8')
     response = requests.post(
         'https://identity.xero.com/connect/token',
@@ -41,7 +39,7 @@ def callback():
         },
         headers={'Authorization': authorization_header_value}
     )
-    if response.status_status_code != 200:
+    if response.status_code != 200:
         return jsonify({'error': 'Failed to fetch token', 'details': response.text}), response.status_code
     session['token'] = response.json().get('access_token')
     return redirect(url_for('index'))
